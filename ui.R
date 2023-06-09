@@ -55,7 +55,6 @@ tagList(
         
         # --- sidebar item two
         tabItem(tabName = "sdtt",
-                h2("sdtt: simple detection theory tool"),
                 
                 fluidPage(
                   
@@ -65,28 +64,31 @@ tagList(
                              h4("Please select the file you wish to analyse."),
                              fileInput("dataInput", "Choose .csv file",
                                        accept = c(".csv")),
-                             
                              tags$hr(),
                              checkboxInput("header", "Header", TRUE),
-                             ))),
-                  
-                  fluidRow(
-                    column(4,
-                           wellPanel(
-                             h4("Please select the measures you wish to calculate."),
-                             tags$hr(),
-                             checkboxInput("d_prime", "d'", FALSE),
-                             checkboxInput("abs_c", "Absolute criterion", FALSE),
-                             checkboxInput("c_prime", "c'", FALSE),
-                             checkboxInput("beta", "Log-likelihood", FALSE)
-                             ))),
+                             actionButton("confirmBut", "Confirm data")
+                             )),
+                    conditionalPanel("input.confirmBut >= 1",
+                                     column(4,
+                                            wellPanel(
+                                              h4("Please select the measures you wish to calculate."),
+                                              tags$hr(),
+                                              checkboxInput("d_prime", "d'", FALSE),
+                                              checkboxInput("abs_c", "Absolute criterion", FALSE),
+                                              checkboxInput("c_prime", "c'", FALSE),
+                                              checkboxInput("beta", "Log-likelihood", FALSE)
+                                            )),
+                    )
+                    )
                 ),
-                  fluidRow(
-                    column(5,
-                       tableOutput("contents")
-                ))
-              
-
+                fluidRow(
+                  column(5,
+                         tableOutput("contents")
+                    ),
+                  conditionalPanel("input.confirmBut >= 1",
+                                   column(7,
+                         tableOutput("proportions")))
+                  )
         )
       )
     )
