@@ -68,26 +68,31 @@ tagList(
                              checkboxInput("header", "Header", TRUE),
                              actionButton("confirmBut", "Confirm data")
                              )),
-                    conditionalPanel("input.confirmBut >= 1",
+                    conditionalPanel(condition = "input.confirmBut >= 1",
                                      column(4,
                                             wellPanel(
                                               h4("Please select the measures you wish to calculate."),
                                               tags$hr(),
-                                              checkboxInput("d_prime", "d'", FALSE),
-                                              checkboxInput("abs_c", "Absolute criterion", FALSE),
-                                              checkboxInput("c_prime", "c'", FALSE),
-                                              checkboxInput("beta", "Log-likelihood", FALSE)
-                                            )),
+                                              checkboxGroupInput(inputId = "mType", label = "Measures",
+                                                                 choices = c("d'",
+                                                                             "Absolute criterion",
+                                                                             "c'",
+                                                                             "Log-likelihood")),
+                                              actionButton("confirmMe", "Confirm measures")
+                                              ))
+                                     )
                     )
-                    )
-                ),
+                  ),
                 fluidRow(
                   column(5,
                          tableOutput("contents")
                     ),
                   conditionalPanel("input.confirmBut >= 1",
                                    column(7,
-                         tableOutput("proportions")))
+                                          tableOutput("proportions"))),
+                  conditionalPanel("input.confirmMe >= 1",
+                                   column(12,
+                                          tableOutput("measures")))
                   )
         )
       )
